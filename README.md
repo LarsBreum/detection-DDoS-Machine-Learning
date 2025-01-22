@@ -8,3 +8,5 @@ Make the bash file executable on your system.
 chmod +x ./docker_build_run.sh
 Run the bash to build and run the container
 ./docker_build_run.sh
+
+Or just run the commands in the bash file yourself :-)
