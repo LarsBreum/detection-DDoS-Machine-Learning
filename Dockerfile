@@ -20,5 +20,8 @@ COPY app /app/
 # Copy the data files into the container
 COPY data /app/data
 
+VOLUME /app/out_data
+VOLUME /app/7_classes
+
 # Command to run the specific Python script
 CMD ["python3", "/app/data_preproc.py"]
