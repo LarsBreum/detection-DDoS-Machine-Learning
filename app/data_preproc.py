@@ -2,97 +2,28 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from datetime import datetime
- 
-# dtypes = {
-    # "Unnamed: 0": int,
-    # "Flow ID": str,
-    # " Source IP": str,
-    # " Source Port": int,
-    # " Destination IP": str,
-    # " Destination Port": int,
-    # " Protocol": int,
-    # " Timestamp": str, 
-    # " Flow Duration": int,
-    # " Total Fwd Packets": int,
-    # " Total Backward Packets": int,
-    # " Total Length of Fwd Packets": float,
-    # " Total Length of Bwd Packets": float,
-    # " Fwd Packet Length Max": float,
-    # " Fwd Packet Length Min": float,
-    # " Fwd Packet Length Mean": float,
-    # " Fwd Packet Length Std": float,
-    # " Bwd Packet Length Max": float,
-    # " Bwd Packet Length Min": float,
-    # " Bwd Packet Length Mean": float,
-    # " Bwd Packet Length Std": float,
-    # " Flow Bytes/s": float,
-    # " Flow Packets/s": float,
-    # " Flow IAT Mean": float,
-    # " Flow IAT Std": float,
-    # " Flow IAT Max": float,
-    # " Flow IAT Min": float,
-    # " Fwd IAT Total": float,
-    # " Fwd IAT Mean": float,
-    # " Fwd IAT Std": float,
-    # " Fwd IAT Max": float,
-    # " Fwd IAT Min": float,
-    # " Bwd IAT Total": float,
-    # " Bwd IAT Mean": float,
-    # " Bwd IAT Std": float,
-    # " Bwd IAT Max": float,
-    # " Bwd IAT Min": float,
-    # " Fwd PSH Flags": int,
-    # " Bwd PSH Flags": int,
-    # " Fwd URG Flags": int,
-    # " Bwd URG Flags": int,
-    # " Fwd Header Length": int,
-    # " Bwd Header Length": int,
-    # " Fwd Packets/s": float,
-    # " Bwd Packets/s": float,
-    # " Min Packet Length": float,
-    # " Max Packet Length": float,
-    # " Packet Length Mean": float,
-    # " Packet Length Std": float,
-    # " Packet Length Variance": float,
-    # " FIN Flag Count": int,
-    # " SYN Flag Count": int,
-    # " RST Flag Count": int,
-    # " PSH Flag Count": int,
-    # " ACK Flag Count": int,
-    # " URG Flag Count": int,
-    # " CWE Flag Count": int,
-    # " ECE Flag Count": int,
-    # " Down/Up Ratio": float,
-    # " Average Packet Size": float,
-    # " Avg Fwd Segment Size": float,
-    # " Avg Bwd Segment Size": float,
-    # " Fwd Header Length.1": int,
-    # " Fwd Avg Bytes/Bulk": float,
-    # " Fwd Avg Packets/Bulk": float,
-    # " Fwd Avg Bulk Rate": float,
-    # " Bwd Avg Bytes/Bulk": float,
-    # " Bwd Avg Packets/Bulk": float,
-    # " Bwd Avg Bulk Rate": float,
-    # " Subflow Fwd Packets": int,
-    # " Subflow Fwd Bytes": int,
-    # " Subflow Bwd Packets": int,
-    # " Subflow Bwd Bytes": int,
-    # " Init_Win_bytes_forward": int,
-    # " Init_Win_bytes_backward": int,
-    # " act_data_pkt_fwd": int,
-    # " min_seg_size_forward": int,
-    # " Active Mean": float,
-    # " Active Std": float,
-    # " Active Max": float,
-    # " Active Min": float,
-    # " Idle Mean": float,
-    # " Idle Std": float,
-    # " Idle Max": float,
-    # " Idle Min": float,
-    # "SimillarHTTP": int,
-    # " Inbound": int,
-    # " Label": str
-#}
+
+LDAP = pd.read_csv('./data/LDAP.csv', low_memory=False)
+benign_df = LDAP[LDAP[' Label'] == 'BENIGN']
+del(LDAP)
+
+print("loaded LDAP")
+
+Portmap = pd.read_csv('./data/Portmap.csv', low_memory=False)
+Portmap = Portmap[Portmap[' Label'] == 'BENIGN']
+benign_df = pd.concat([benign_df, Portmap], ignore_index=True)
+print("concated portmap")
+del(Portmap)
+
+Syn = pd.read_csv('./data/Syn.csv', low_memory=False)
+print("loaded Syn")
+Syn = Portmap[Syn[' Label'] == 'BENIGN']
+print("kept only benign")
+benign_df = pd.concat([benign_df, Syn], ignore_index=True)
+print("concated Syn")
+del(Syn)
+
+print(benign_df.describe())
 
 udp = pd.read_csv('./data/UDP.csv', low_memory=False)
 udp = udp[udp['Label'].isin(["BENIGN", "UDP"])]
