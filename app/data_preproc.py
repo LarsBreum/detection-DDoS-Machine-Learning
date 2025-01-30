@@ -3,34 +3,13 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from datetime import datetime
 
-LDAP = pd.read_csv('./data/LDAP.csv', low_memory=False)
-benign_df = LDAP[LDAP[' Label'] == 'BENIGN']
-del(LDAP)
-
-print("loaded LDAP")
-
-Portmap = pd.read_csv('./data/Portmap.csv', low_memory=False)
-Portmap = Portmap[Portmap[' Label'] == 'BENIGN']
-benign_df = pd.concat([benign_df, Portmap], ignore_index=True)
-print("concated portmap")
-del(Portmap)
-
-# Syn = pd.read_csv('./data/Syn.csv', low_memory=False)
-# print("loaded Syn")
-# Syn = Portmap[Syn[' Label'] == 'BENIGN']
-# print("kept only benign")
-# benign_df = pd.concat([benign_df, Syn], ignore_index=True)
-# print("concated Syn")
-# del(Syn)
-
-print(benign_df.describe())
 
 udp = pd.read_csv('./data/UDP.csv', low_memory=False)
-udp = udp[udp['Label'].isin(["BENIGN", "UDP"])]
+udp = udp[udp[' Label'].isin(["UDP"])]
 udp_cols = list(udp.columns.values)
 
 udp2 = pd.read_csv('./data/DrDoS_UDP.csv', low_memory=False)
-udp2 = udp2[udp2['Label'].isin(["BENIGN", "DrDoS_UDP"])]
+udp2 = udp2[udp2['Label'].isin(["DrDoS_UDP"])]
 udp2_cols = list(udp.columns.values)
 
 print("---- SHAPES ----")
@@ -112,8 +91,6 @@ benign_df=benign_df.drop('SimillarHTTP', axis=1)
 benign_df=benign_df.drop('Flow ID', axis=1)
 #df=df.drop(' Timestamp', axis=1)
 
-
-df['Label'] = df['Label'].replace('BENIGN', '0')
 df['Label'] = df['Label'].replace('UDP', '1')
 df['Label'] = df['Label'].replace('DrDoS_UDP', '1')
 
@@ -137,7 +114,7 @@ a = df
 import netaddr
 
 def convert_ips(column_name, dataframe):
-  ips = dataframe[columne_name].unique()
+  ips = dataframe[column_name].unique()
   l = len(ips)
   print('starting loop, length is',l)
   for i in range(l):
@@ -178,10 +155,4 @@ print("describe df")
 print(df.describe())
 
 
-df.to_csv('./out_data/complete_dataset.csv')
-
-# Write only benign data set
-print("----- BENIGN -----")
-benign_df = pd.concat([benign_df, df[df['Label'] == '0']], ignore_index=True)
-print(benign_df.describe())
-benign_df.to_csv('./out_data/benign_cicdos_dataset.csv')
+df.to_csv('./out_data/malic_dataset.csv')
