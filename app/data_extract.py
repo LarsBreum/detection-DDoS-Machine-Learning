@@ -21,10 +21,11 @@ def process(df, label = "BENIGN", label_value = 0):
     df[' Source IP'] = df[' Source IP'].fillna(0)
 
     print(df.info())
-    #removing columns where variation(std) is 0
 
+    #removing columns where variation(std) is 0
     df = df.drop(columns=df.select_dtypes(include=np.number).loc[:, lambda x: x.std() <= 0.1].columns)
     print("Desribe numbers")
+
     # Compute standard deviation for numeric columns
     std_values = df.select_dtypes(include=np.number).std()
 
@@ -32,7 +33,7 @@ def process(df, label = "BENIGN", label_value = 0):
     for col, std in std_values.items():
         print(f"Column: {col}, Standard Deviation: {std}")
 
-    df['Label'] = df[' Label'].replace(label, label_value)
+    df['Label'] = df[' Label'].replace(label, label_value) #replace label with a numeric value
 
     print('num = ',len(df[' Source IP'].unique()))
     df[' Source IP'].unique()
@@ -56,8 +57,8 @@ def process(df, label = "BENIGN", label_value = 0):
     df.to_csv(f'./out_data/{label}.csv', index=False, mode='a', header=False)
 
 
-if len(sys.argv) <= 0:
-  print("Please provide a label")
+if len(sys.argv) < 3:
+  print("Please provide three arguments. LABEL, chunksize and label_value.")
 else:
 
   chunk = sys.argv[2]
