@@ -16,7 +16,7 @@ def convert_ips(column_name, dataframe):
   print("loop over")
   return dataframe
 
-def process(df, label = "BENIGN"):
+def process(df, label = "BENIGN", label_value = 0):
     df[' Destination IP'] = df[' Destination IP'].fillna(0)
     df[' Source IP'] = df[' Source IP'].fillna(0)
 
@@ -32,7 +32,7 @@ def process(df, label = "BENIGN"):
     for col, std in std_values.items():
         print(f"Column: {col}, Standard Deviation: {std}")
 
-    df['Label'] = df[' Label'].replace(label, '0')
+    df['Label'] = df[' Label'].replace(label, label_value)
 
     print('num = ',len(df[' Source IP'].unique()))
     df[' Source IP'].unique()
@@ -53,7 +53,7 @@ def process(df, label = "BENIGN"):
     print("describe df")
     print(df.describe())
     print(f"Writing: ./out_data/{out_file}.csv")
-    df.to_csv(f'{label}.csv', index=False, mode='a', header=False)
+    df.to_csv(f'./out_data/{label}.csv', index=False, mode='a', header=False)
 
 
 if len(sys.argv) <= 0:
@@ -65,6 +65,7 @@ else:
   # Get a list of all CSV files in the directory
   filenames = glob.glob("./data/*.csv")
   print(f"Extracting label: {sys.argv[1]}")
+  print(f"Labeling with the value: {sys.argv[3]}")
 
   
   out_file = sys.argv[1]
@@ -75,9 +76,14 @@ else:
       print(f"Processing chunk with {len(chunk)} rows")
 
       df = df[df[' Label'] == sys.argv[1]]
+
+      if df.empty:
+        print("No data in this chunk. Carry on.")
+        continue
+        
       print(f"Outputted {sys.argv[1]} data for: {file}")
       print(f"processing data for: {file}")
-      process(df, f"{sys.argv[1]}")
+      process(df, f"{sys.argv[1]}", sys.argv[3])
       print(f"Processed: {file}")
       del(df)
 
