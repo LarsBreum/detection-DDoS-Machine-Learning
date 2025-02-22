@@ -12,3 +12,8 @@ Example:
 python3 data_extract.py BENIGN 100000 0
 Or
 python3 data_extract.py UDP 100000 1
+
+# Run with parallelism
+The parameters.txt contains the default parameters needed to extract the features and export to .csv according to the authors linked above.
+Change the "-j 8" flag and parameter to a value suited for your hardware.
+Run with ./run.sh
