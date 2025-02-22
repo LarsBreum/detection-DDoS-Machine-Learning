@@ -1,7 +1,7 @@
 # Preprocessing for master's thesis
 All code credit goes to: https://github.com/mohak1/Detection-and-Classification-of-Distributed-DoS-Attacks-using-Machine-Learning
 
-# How to run. 
+# How to run Python script
 Install the dependencies
 python3 data_extract.py <LABEL> <chunksize> <label_value>
 
@@ -13,7 +13,7 @@ python3 data_extract.py BENIGN 100000 0
 Or
 python3 data_extract.py UDP 100000 1
 
-# Run with parallelism
+# Run with parallelism and defualt values
 The parameters.txt contains the default parameters needed to extract the features and export to .csv according to the authors linked above.
 Change the "-j 8" flag and parameter to a value suited for your hardware.
 ## To run with default values
