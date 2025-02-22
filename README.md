@@ -16,4 +16,6 @@ python3 data_extract.py UDP 100000 1
 # Run with parallelism
 The parameters.txt contains the default parameters needed to extract the features and export to .csv according to the authors linked above.
 Change the "-j 8" flag and parameter to a value suited for your hardware.
-Run with ./run.sh
+## To run with default values
+chmod +x run.sh
+Run with: ./run.sh
